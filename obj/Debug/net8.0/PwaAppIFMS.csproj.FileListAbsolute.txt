@@ -1028,9 +1028,6 @@
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/3gmf4mdgu6-{0}-tptq2av103-tptq2av103.gz
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/epoz8ol1bp-{0}-lfu7j35m59-lfu7j35m59.gz
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/72ypu4i64t-{0}-oyz0vx2fzb-oyz0vx2fzb.gz
-/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/qjttx1mm51-{0}-lsahgjxfg6-lsahgjxfg6.gz
-/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/ef0d5zy6k2-{0}-3pnd7jwbl6-3pnd7jwbl6.gz
-/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/7p233n20so-{0}-1jyttk50un-1jyttk50un.gz
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/staticwebassets.build.json
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/staticwebassets.build.json.cache
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/staticwebassets.development.json
@@ -1040,3 +1037,7 @@
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/refint/PwaAppIFMS.dll
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/PwaAppIFMS.pdb
 /home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/ref/PwaAppIFMS.dll
+/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/PwaAppIFMS.sourcelink.json
+/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/qjttx1mm51-{0}-xvyhf8v1e3-xvyhf8v1e3.gz
+/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/ef0d5zy6k2-{0}-378olg73pg-378olg73pg.gz
+/home/ryan_padilha/Downloads/PwaAppIFMS2/obj/Debug/net8.0/compressed/7p233n20so-{0}-3vwyd607ql-3vwyd607ql.gz

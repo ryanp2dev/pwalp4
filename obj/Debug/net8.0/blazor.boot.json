@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "PwaAppIFMS",
   "resources": {
-    "hash": "sha256-GddGGoTU9OXw7gmh/ZexrRjwnskIAWA4PoPe9bKQl0w=",
+    "hash": "sha256-1+UL0j3ywe+YRQ1LPNn9qoi0zdQdW9nvAjO7juowNeE=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-YyxJV6dv935qHoQAmjB+2qRjHeGpm4SyWxE0T/KvsIE="
     },
@@ -209,10 +209,10 @@
       "mscorlib.wasm": "sha256-flmBXVpp8uDpWBNEJuRkqo3Qnir1KADo5a1rCQISkPs=",
       "netstandard.wasm": "sha256-iuCVrIBmiGbXpNVvYkBmSt16BNEjbbD82vYrtHimftc=",
       "System.Private.CoreLib.wasm": "sha256-1Xa/xaUoA/iRxpDqZPUUzL8QaTawkoJLhGmxtRv9ZJI=",
-      "PwaAppIFMS.wasm": "sha256-5VyPhuAJCH07rWwDpipYxUTmHLaRd+YMp0A36nK/yhM="
+      "PwaAppIFMS.wasm": "sha256-3Ymt2m8l2BM786nH1uf8OqGbcYiK4m6RbhBLVJPn5e8="
     },
     "pdb": {
-      "PwaAppIFMS.pdb": "sha256-NwyT1eT51bIoRcesIXnSVK069n7mdrS3LOUWE9skIgA="
+      "PwaAppIFMS.pdb": "sha256-gRs9ADe65BCg7+Kd2Ip8TN2Yb2WZdQs72nW2Z5zUnNs="
     }
   },
   "cacheBootResources": true,
