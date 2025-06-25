@@ -1,0 +1,50 @@
+# Nome do workflow
+name: Deploy Blazor PWA to GitHub Pages
+
+# Dispara o workflow em push na branch 'main' (ou 'master')
+on:
+  push:
+    branches:
+      - master # Mude para 'master' se for a sua branch principal
+
+# Define as permissões para o deploy no GitHub Pages
+permissions:
+  contents: write
+
+# Define os jobs que serão executados
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Executa o job em um ambiente Linux
+
+    steps:
+      # Passo 1: Faz o checkout do seu código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Passo 2: Configura o SDK do .NET 8
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x' # Versão estável do .NET 8
+
+      # Passo 3: Publica o aplicativo Blazor WebAssembly em modo de Release
+      - name: Publish Blazor app
+        run: dotnet publish -c Release -o app/published --nologo
+
+      # Passo 4: Ajusta a base href para o GitHub Pages
+      # Este passo é crucial para que a aplicação funcione corretamente no subdiretório do GitHub Pages.
+      - name: Adjust base href for GitHub Pages
+        run: |
+          # Obtenha o nome do repositório a partir da variável de ambiente do GitHub
+          REPO_NAME=$(echo ${{ github.repository }} | cut -d '/' -f 2)
+          # Substitui a base href no index.html publicado
+          sed -i "s|<base href=\"/\" />|<base href=\"/$REPO_NAME/\" />|g" app/published/wwwroot/index.html
+
+      # Passo 5: Implanta os arquivos publicados no GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: app/published/wwwroot
+          publish_branch: gh-pages # A branch onde os arquivos serão publicados
+          force_orphan: true # Cria a branch 'gh-pages' do zero a cada deploy

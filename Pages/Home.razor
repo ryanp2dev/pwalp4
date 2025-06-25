@@ -1,0 +1,248 @@
+﻿@page "/"
+@inject LocalStorageService LocalStorage
+@inject IJSRuntime JSRuntime
+
+<PageTitle>My Tasks - Gerenciador de Tarefas PWA (CRUD com Imagens)</PageTitle>
+
+<h1>Minhas Tarefas (CRUD com Imagens) - IFMS</h1>
+
+<div class="mb-3">
+    <label for="newTaskTitle" class="form-label">Nova Tarefa:</label>
+    <div class="input-group mb-2">
+        <input type="text" class="form-control" id="newTaskTitle" @bind="newTaskTitle"
+               @onkeyup="HandleNewTaskKeyUp" placeholder="Digite sua nova tarefa aqui..." />
+        <button class="btn btn-primary" @onclick="AddTask">Adicionar Tarefa</button>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label">Adicionar Imagem à Tarefa (opcional, máx 500KB):</label>
+        <InputFile OnChange="HandleNewTaskImageUpload" class="form-control" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(newTaskImageDataUrl))
+    {
+        <div class="mb-2 text-center">
+            <img src="@newTaskImageDataUrl" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" alt="Pré-visualização da nova imagem" />
+            <button class="btn btn-sm btn-danger ms-2" @onclick="ClearNewTaskImage">Remover Imagem</button>
+        </div>
+    }
+</div>
+
+@if (tasks.Any())
+{
+    <h2>Lista de Tarefas</h2>
+    <ul class="list-group">
+        @foreach (var task in tasks)
+        {
+            <li class="list-group-item d-flex align-items-center mb-2 flex-wrap">
+                @if (task.IsEditing)
+                {
+                    <div class="col-12 mb-2">
+                        <input type="text" class="form-control" @bind="task.Title"
+                               @onkeyup="(e) => HandleEditKeyUp(e, task)" @onblur="() => FinishEdit(task)" />
+                    </div>
+                    <div class="col-12 mb-2">
+                        <label class="form-label">Alterar Imagem (máx 500KB):</label>
+                        <InputFile OnChange="(e) => LoadImage(e, task)" class="form-control" />
+                    </div>
+                    @if (!string.IsNullOrEmpty(task.ImageDataUrl))
+                    {
+                        <div class="col-12 mb-2 text-center">
+                            <img src="@task.ImageDataUrl" class="img-thumbnail" style="max-width: 150px; max-height: 150px;" alt="Imagem da tarefa" />
+                        </div>
+                    }
+                    <div class="col-12 d-flex justify-content-end">
+                        <button class="btn btn-success btn-sm me-2" @onclick="() => FinishEdit(task)">Salvar</button>
+                        <button class="btn btn-secondary btn-sm" @onclick="() => CancelEdit(task)">Cancelar</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center flex-grow-1">
+                        @if (!string.IsNullOrEmpty(task.ImageDataUrl))
+                        {
+                            <img src="@task.ImageDataUrl" class="img-thumbnail me-2"
+                                 style="width: 50px; height: 50px; object-fit: cover; cursor: pointer;"
+                                 alt="Imagem da tarefa"
+                                 @onclick="() => OpenImageModal(task.ImageDataUrl)" />
+                        }
+                        <span class="flex-grow-1">@task.Title</span>
+                    </div>
+                    <div class="ms-auto">
+                        <button class="btn btn-warning btn-sm me-2" @onclick="() => EditTask(task)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => RemoveTask(task)">Remover</button>
+                    </div>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Nenhuma tarefa adicionada ainda. Que tal adicionar sua primeira tarefa do IFMS?</p>
+}
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Visualizar Imagem da Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if (!string.IsNullOrEmpty(currentModalImageUrl))
+                {
+                    <img src="@currentModalImageUrl" class="img-fluid" alt="Imagem em destaque" />
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<TaskItem> tasks = new List<TaskItem>();
+    private string newTaskTitle = string.Empty;
+    private string? newTaskImageDataUrl; // Novo: Para a imagem da nova tarefa
+    private string? currentModalImageUrl; // Novo: Para a URL da imagem no modal
+    private const string LocalStorageKey = "myTasksPWA";
+
+    private TaskItem? originalTaskState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var savedTasks = await LocalStorage.GetItemAsync<List<TaskItem>>(LocalStorageKey);
+        if (savedTasks != null)
+        {
+            tasks = savedTasks;
+        }
+    }
+
+    private async Task AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTaskTitle))
+        {
+            var newTask = new TaskItem
+            {
+                Title = newTaskTitle.Trim(),
+                ImageDataUrl = newTaskImageDataUrl // Atribui a imagem selecionada na criação
+            };
+            tasks.Add(newTask);
+            newTaskTitle = string.Empty;
+            newTaskImageDataUrl = null; // Limpa a imagem após adicionar a tarefa
+            await SaveTasks();
+        }
+    }
+
+    private async Task RemoveTask(TaskItem taskToRemove)
+    {
+        tasks.Remove(taskToRemove);
+        await SaveTasks();
+    }
+
+    private void EditTask(TaskItem task)
+    {
+        originalTaskState = new TaskItem
+        {
+            Id = task.Id,
+            Title = task.Title,
+            ImageDataUrl = task.ImageDataUrl,
+            IsEditing = false
+        };
+        task.IsEditing = true;
+    }
+
+    private async Task FinishEdit(TaskItem task)
+    {
+        if (string.IsNullOrWhiteSpace(task.Title))
+        {
+            tasks.Remove(task);
+        }
+        task.IsEditing = false;
+        originalTaskState = null;
+        await SaveTasks();
+    }
+
+    private void CancelEdit(TaskItem task)
+    {
+        if (originalTaskState != null && originalTaskState.Id == task.Id)
+        {
+            task.Title = originalTaskState.Title;
+            task.ImageDataUrl = originalTaskState.ImageDataUrl;
+        }
+        task.IsEditing = false;
+        originalTaskState = null;
+    }
+
+    private async Task HandleNewTaskKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await AddTask();
+        }
+    }
+
+    private async Task HandleEditKeyUp(KeyboardEventArgs e, TaskItem task)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await FinishEdit(task);
+        }
+    }
+
+    // Método para carregar imagem no modo de edição (EXISTENTE)
+    private async Task LoadImage(InputFileChangeEventArgs e, TaskItem task)
+    {
+        await ProcessImageUpload(e, (imageDataUrl) => task.ImageDataUrl = imageDataUrl);
+    }
+
+    // Novo método para carregar imagem no cadastro inicial
+    private async Task HandleNewTaskImageUpload(InputFileChangeEventArgs e)
+    {
+        await ProcessImageUpload(e, (imageDataUrl) => newTaskImageDataUrl = imageDataUrl);
+    }
+
+    // Novo método auxiliar para processar upload de imagem (reutilizável)
+    private async Task ProcessImageUpload(InputFileChangeEventArgs e, Action<string?> setImageDataUrl)
+    {
+        if (e.FileCount > 0)
+        {
+            var file = e.GetMultipleFiles().FirstOrDefault();
+            if (file != null)
+            {
+                if (file.Size > 500 * 1024) // Limite de 500KB
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "A imagem é muito grande. Por favor, selecione uma imagem menor (máx 500KB).");
+                    setImageDataUrl(null); // Limpa a imagem selecionada se for muito grande
+                    return;
+                }
+
+                var buffer = new byte[file.Size];
+                await file.OpenReadStream().ReadAsync(buffer);
+                setImageDataUrl($"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}");
+                StateHasChanged();
+            }
+        }
+    }
+
+    // Novo método para limpar a imagem da nova tarefa
+    private void ClearNewTaskImage()
+    {
+        newTaskImageDataUrl = null;
+        StateHasChanged();
+    }
+
+    // Novo: Abre o modal de imagem
+    private async Task OpenImageModal(string imageUrl)
+    {
+        currentModalImageUrl = imageUrl;
+        await JSRuntime.InvokeVoidAsync("showImageModal"); // Chama uma função JS para mostrar o modal
+    }
+
+    private async Task SaveTasks()
+    {
+        await LocalStorage.SetItemAsync(LocalStorageKey, tasks);
+    }
+}

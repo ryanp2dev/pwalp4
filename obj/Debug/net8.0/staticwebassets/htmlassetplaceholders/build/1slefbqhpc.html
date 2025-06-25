@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PwaAppIFMS</title>
+    <base href="/" />
+    
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="PwaAppIFMS.styles.css" rel="stylesheet" />
+        <link href="manifest.webmanifest" rel="manifest" />
+        <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <script type="importmap">{
+  "imports": {
+    "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.mv535bwyet.js",
+    "./lib/bootstrap/dist/js/bootstrap.bundle.min.js": "./lib/bootstrap/dist/js/bootstrap.bundle.min.493y06b0oq.js",
+    "./lib/bootstrap/dist/js/bootstrap.bundle.js": "./lib/bootstrap/dist/js/bootstrap.bundle.za977r1ce6.js",
+    "./lib/bootstrap/dist/js/bootstrap.esm.min.js": "./lib/bootstrap/dist/js/bootstrap.esm.min.jj8uyg4cgr.js",
+    "./lib/bootstrap/dist/js/bootstrap.esm.js": "./lib/bootstrap/dist/js/bootstrap.esm.rxs2skfmnb.js",
+    "./lib/bootstrap/dist/js/bootstrap.min.js": "./lib/bootstrap/dist/js/bootstrap.min.63fj8s7r0e.js",
+    "./lib/bootstrap/dist/js/bootstrap.js": "./lib/bootstrap/dist/js/bootstrap.wqcl9j9nxd.js"
+  },
+  "scopes": {},
+  "integrity": {
+    "./_framework/blazor.webassembly.js": "sha256-gvHfnndfEu1tRf0rFb5988rWq7ITIotOaE8+AMbKYbc=",
+    "./_framework/blazor.webassembly.mv535bwyet.js": "sha256-gvHfnndfEu1tRf0rFb5988rWq7ITIotOaE8+AMbKYbc=",
+    "./_framework/dotnet.js": "sha256-cOwAFKSiFURzTdw5t28bH/MKPKfBVJC9HlzaEnr+8o8=",
+    "./_framework/dotnet.native.js": "sha256-YyxJV6dv935qHoQAmjB+2qRjHeGpm4SyWxE0T/KvsIE=",
+    "./_framework/dotnet.runtime.js": "sha256-nlm9ZX+9Z8SHWuCfVhHT5pkK9QzTgBn3opfL6mMas20=",
+    "./lib/bootstrap/dist/js/bootstrap.bundle.js": "sha256-JRL4zVTQAYbMEhL3ryhBl2JVCUcHUd0CAP9BJn/pcfU=",
+    "./lib/bootstrap/dist/js/bootstrap.bundle.min.493y06b0oq.js": "sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw=",
+    "./lib/bootstrap/dist/js/bootstrap.bundle.min.js": "sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw=",
+    "./lib/bootstrap/dist/js/bootstrap.bundle.za977r1ce6.js": "sha256-JRL4zVTQAYbMEhL3ryhBl2JVCUcHUd0CAP9BJn/pcfU=",
+    "./lib/bootstrap/dist/js/bootstrap.esm.js": "sha256-ASV94YtSZhSJXtTX5yZa2PSRQfgI+4jw1ZiqPKfuWwA=",
+    "./lib/bootstrap/dist/js/bootstrap.esm.min.jj8uyg4cgr.js": "sha256-QZdFT1ZNdly4rmgUBtXmXFS9BU1FTa+sPe6h794sFRQ=",
+    "./lib/bootstrap/dist/js/bootstrap.esm.min.js": "sha256-QZdFT1ZNdly4rmgUBtXmXFS9BU1FTa+sPe6h794sFRQ=",
+    "./lib/bootstrap/dist/js/bootstrap.esm.rxs2skfmnb.js": "sha256-ASV94YtSZhSJXtTX5yZa2PSRQfgI+4jw1ZiqPKfuWwA=",
+    "./lib/bootstrap/dist/js/bootstrap.js": "sha256-yFj0MdWfYE0BlpJ8POEcY6BBhCfor9aTI0DQkmEms/8=",
+    "./lib/bootstrap/dist/js/bootstrap.min.63fj8s7r0e.js": "sha256-3gQJhtmj7YnV1fmtbVcnAV6eI4ws0Tr48bVZCThtCGQ=",
+    "./lib/bootstrap/dist/js/bootstrap.min.js": "sha256-3gQJhtmj7YnV1fmtbVcnAV6eI4ws0Tr48bVZCThtCGQ=",
+    "./lib/bootstrap/dist/js/bootstrap.wqcl9j9nxd.js": "sha256-yFj0MdWfYE0BlpJ8POEcY6BBhCfor9aTI0DQkmEms/8="
+  }
+}</script>
+</head>
+
+<body>
+<div id="app">
+    <svg class="loading-progress">
+        <circle r="40%" cx="50%" cy="50%" />
+        <circle r="40%" cx="50%" cy="50%" />
+    </svg>
+    <div class="loading-progress-text"></div>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+
+<script src="_framework/blazor.webassembly.js"></script>
+
+<script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    window.showImageModal = () => {
+        // Agora, 'bootstrap' deve estar definido aqui
+        var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        myModal.show();
+    };
+</script>
+<script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+
+</html>
